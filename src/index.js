@@ -4,13 +4,25 @@ Any live cell with more than three live neighbours dies, as if by overcrowding.
 Any live cell with two or three live neighbours lives on to the next generation.
 Any dead cell with exactly three live neighbours becomes a live cell.
  */
+let start = 0;
+let continious;
 const button = document.querySelector('.btn');
-const width = document.querySelector('#canvas').getAttribute('width');
-const canvas = document.querySelector('#canvas').getContext('2d');
-const size = (width * 2) / 50;
-const cols = width / size;
+const buttonRst = document.querySelector('.btn-reset');
+const width =
+  document.querySelector('.canvas').clientWidth -
+  (document.querySelector('.canvas').clientWidth % 2);
+const height =
+  document.querySelector('.canvas').clientHeight -
+  (document.querySelector('.canvas').clientHeight % 2);
+const canvas = document.querySelector('.canvas').getContext('2d');
+const size = Math.round((width * height) / ((width * height) / 8));
+const cols = Math.round(width / size);
+const rows = Math.round(height / size);
 
-function countNeighbours(i, j, cols, arr) {
+document.querySelector('.canvas').setAttribute('width', `${width}`);
+document.querySelector('.canvas').setAttribute('height', `${height}`);
+
+function countNeighbours(i, j, arr) {
   /*
     let upL = arr[i - 1][j - 1][2];
     let up = arr[i - 1][j][2];
@@ -27,7 +39,7 @@ function countNeighbours(i, j, cols, arr) {
     neighbours += arr[i][j + 1][2] + arr[i + 1][j][2] + arr[i + 1][j + 1][2];
     return neighbours;
   }
-  if (j === cols - 1 && i === 0) {
+  if (j === rows - 1 && i === 0) {
     neighbours += arr[i + 1][j][2] + arr[i][j - 1][2] + arr[i + 1][j - 1][2];
     return neighbours;
   }
@@ -35,12 +47,12 @@ function countNeighbours(i, j, cols, arr) {
     neighbours += arr[i][j + 1][2] + arr[i - 1][j][2] + arr[i - 1][j + 1][2];
     return neighbours;
   }
-  if (j === cols - 1 && i === cols - 1) {
+  if (j === rows - 1 && i === cols - 1) {
     neighbours += arr[i][j - 1][2] + arr[i - 1][j][2] + arr[i - 1][j - 1][2];
     return neighbours;
   }
 
-  if (i === 0 && j !== 0 && j !== cols - 1) {
+  if (i === 0 && j !== 0 && j !== rows - 1) {
     neighbours +=
       arr[i][j - 1][2] +
       arr[i][j + 1][2] +
@@ -58,7 +70,7 @@ function countNeighbours(i, j, cols, arr) {
       arr[i + 1][j + 1][2];
     return neighbours;
   }
-  if (i === cols - 1 && j !== 0 && j !== cols - 1) {
+  if (i === cols - 1 && j !== 0 && j !== rows - 1) {
     neighbours +=
       arr[i - 1][j - 1][2] +
       arr[i - 1][j][2] +
@@ -67,7 +79,7 @@ function countNeighbours(i, j, cols, arr) {
       arr[i][j + 1][2];
     return neighbours;
   }
-  if (j === cols - 1 && i !== 0 && i !== cols - 1) {
+  if (j === rows - 1 && i !== 0 && i !== cols - 1) {
     neighbours +=
       arr[i - 1][j - 1][2] +
       arr[i - 1][j][2] +
@@ -89,27 +101,29 @@ function countNeighbours(i, j, cols, arr) {
   }
 }
 
-const make2Darray = function (cols) {
+const make2Darray = function () {
   const arr = new Array(cols);
   for (let i = 0; i < cols; i += 1) {
-    arr[i] = new Array(cols);
+    arr[i] = new Array(rows);
   }
   for (let i = 0; i < cols; i += 1) {
-    for (let j = 0; j < cols; j += 1) {
-      let z = Math.round(Math.random() / 1.85);
-      // if (j % 2 === 0) {
-      //   z = Math.round(Math.random() / 1.5);
-      // }
+    for (let j = 0; j < rows; j += 1) {
+      let z;
+      if (j % 2 === 0) {
+        z = Math.round(Math.random() / 1.95);
+      } else {
+        z = Math.round(Math.random() / 1.9);
+      }
       arr[i][j] = [i, j, z];
     }
   }
   for (let i = 0; i < cols; i += 1) {
-    for (let j = 0; j < cols; j += 1) {
-      arr[i][j].push(countNeighbours(i, j, cols, arr));
+    for (let j = 0; j < rows; j += 1) {
+      arr[i][j].push(countNeighbours(i, j, arr));
       if (arr[i][j][2] === 1) {
         canvas.fillStyle = `rgb(
             0,
-            0, 
+            0,
             ${Math.floor(Math.random() * 255)})`;
         canvas.fillRect(i * size, j * size, size, size);
       }
@@ -121,13 +135,13 @@ const make2Darray = function (cols) {
   return arr;
 };
 
-const arr = make2Darray(cols);
+let arr = make2Darray();
 
-function gameOflife(arr, cols) {
+function gameOflife() {
   const arrCopy = [...arr];
   for (let i = 0; i < cols; i += 1) {
-    for (let j = 0; j < cols; j += 1) {
-      let neighbours = countNeighbours(i, j, cols, arrCopy);
+    for (let j = 0; j < rows; j += 1) {
+      let neighbours = countNeighbours(i, j, arrCopy);
       if (neighbours < 2) {
         arr[i][j][2] = 0;
       } else if (neighbours > 3) {
@@ -141,7 +155,7 @@ function gameOflife(arr, cols) {
       if (arr[i][j][2] === 1) {
         canvas.fillStyle = `rgb(
             0,
-            0, 
+            0,
             ${Math.floor(Math.random() * 255)})`;
         canvas.fillRect(i * size, j * size, size, size);
       }
@@ -152,8 +166,21 @@ function gameOflife(arr, cols) {
   }
 }
 
-window.addEventListener('keypress', onBtnClick);
+button.addEventListener('click', onBtnClick);
 
 function onBtnClick() {
-  gameOflife(arr, cols);
+  start = start === 0 ? 1 : 0;
+  if (start) {
+    continious = setInterval(gameOflife, 75);
+    button.textContent = 'Stop';
+  } else {
+    clearInterval(continious);
+    button.textContent = 'Start';
+  }
+}
+
+buttonRst.addEventListener('click', onRstBtnClick);
+
+function onRstBtnClick() {
+  arr = make2Darray();
 }
