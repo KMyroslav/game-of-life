@@ -17,8 +17,8 @@ body {
   position: absolute;
   padding: 0px;
   margin: 0px;
-  top: 1%;
-  left: 1%;
+  bottom: 1%;
+  right: 1%;
 }
 
 .list-item:not(:last-child) {
@@ -27,7 +27,7 @@ body {
 
 .btn {
   display: inline-block;
-  padding: 3px 9px;
+  padding: 6px 12px;
   border: 1px solid transparent;
   border-radius: 2em;
   box-sizing: border-box;
@@ -45,5 +45,5 @@ body {
 }
 
 .btn-reset {
-  padding: 3px 6px;
+  padding: 6px 9px;
 }
