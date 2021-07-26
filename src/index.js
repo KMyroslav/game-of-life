@@ -13,7 +13,7 @@ const button = document.querySelector('.btn');
 const buttonRst = document.querySelector('.btn-reset');
 let canvas = document.querySelector('.canvas');
 let canvas2D = document.querySelector('.canvas').getContext('2d');
-const size = 8;
+const size = 12;
 const width = canvas.clientWidth - (canvas.clientWidth % size);
 const height = canvas.clientHeight - (canvas.clientHeight % size);
 const cols = width / size;
@@ -174,7 +174,6 @@ function gameOflife() {
       } else if (arr[i][j][2] === 0 && neighbours === 3) {
         arr[i][j][2] = 1;
       }
-
       if (arr[i][j][2] === 1) {
         canvas2D.fillStyle = `rgb(
             0,
