@@ -1,8 +1,8 @@
 /* 
-Any live cell with fewer than two live neighbours dies, as if caused by underpopulation.
-Any live cell with more than three live neighbours dies, as if by overcrowding.
-Any live cell with two or three live neighbours lives on to the next generation.
-Any dead cell with exactly three live neighbours becomes a live cell.
+Any live cell with fewer than two live neighbors dies, as if caused by underpopulation.
+Any live cell with more than three live neighbors dies, as if by overcrowding.
+Any live cell with two or three live neighbors lives on to the next generation.
+Any dead cell with exactly three live neighbors becomes a live cell.
  */
 
 let continious,
@@ -39,107 +39,30 @@ canvas.onmousedown = function () {
   if (arr[curX][curY][2] === 0) {
     canvas2D.clearRect(curX * size, curY * size, size, size);
   }
-  console.log(arr[curX][curY][2]);
+  console.log(arr);
 };
-
-function countNeighbours(i, j, arr) {
-  /*
-    let upL = arr[i - 1][j - 1][2];
-    let up = arr[i - 1][j][2];
-    let upR = arr[i - 1][j + 1][2];
-    let L = arr[i][j - 1][2];
-    let central = arr[i][j][2];
-    let R = arr[i][j + 1][2];
-    let downL = arr[i + 1][j - 1][2];
-    let down = arr[i + 1][j][2];
-    let downR = arr[i + 1][j + 1][2];
-    */
-  let neighbours = 0;
-  if (j === 0 && i === 0) {
-    neighbours += arr[i][j + 1][2] + arr[i + 1][j][2] + arr[i + 1][j + 1][2];
-    return neighbours;
-  }
-  if (j === rows - 1 && i === 0) {
-    neighbours += arr[i + 1][j][2] + arr[i][j - 1][2] + arr[i + 1][j - 1][2];
-    return neighbours;
-  }
-  if (j === 0 && i === cols - 1) {
-    neighbours += arr[i][j + 1][2] + arr[i - 1][j][2] + arr[i - 1][j + 1][2];
-    return neighbours;
-  }
-  if (j === rows - 1 && i === cols - 1) {
-    neighbours += arr[i][j - 1][2] + arr[i - 1][j][2] + arr[i - 1][j - 1][2];
-    return neighbours;
-  }
-
-  if (i === 0 && j !== 0 && j !== rows - 1) {
-    neighbours +=
-      arr[i][j - 1][2] +
-      arr[i][j + 1][2] +
-      arr[i + 1][j - 1][2] +
-      arr[i + 1][j][2] +
-      arr[i + 1][j + 1][2];
-    return neighbours;
-  }
-  if (j === 0 && i !== 0 && i !== cols - 1) {
-    neighbours +=
-      arr[i - 1][j][2] +
-      arr[i - 1][j + 1][2] +
-      arr[i][j + 1][2] +
-      arr[i + 1][j][2] +
-      arr[i + 1][j + 1][2];
-    return neighbours;
-  }
-  if (i === cols - 1 && j !== 0 && j !== rows - 1) {
-    neighbours +=
-      arr[i - 1][j - 1][2] +
-      arr[i - 1][j][2] +
-      arr[i - 1][j + 1][2] +
-      arr[i][j - 1][2] +
-      arr[i][j + 1][2];
-    return neighbours;
-  }
-  if (j === rows - 1 && i !== 0 && i !== cols - 1) {
-    neighbours +=
-      arr[i - 1][j - 1][2] +
-      arr[i - 1][j][2] +
-      arr[i][j - 1][2] +
-      arr[i + 1][j - 1][2] +
-      arr[i + 1][j][2];
-    return neighbours;
-  } else {
-    neighbours +=
-      arr[i - 1][j - 1][2] +
-      arr[i - 1][j][2] +
-      arr[i - 1][j + 1][2] +
-      arr[i][j - 1][2] +
-      arr[i][j + 1][2] +
-      arr[i + 1][j - 1][2] +
-      arr[i + 1][j][2] +
-      arr[i + 1][j + 1][2];
-    return neighbours;
-  }
-}
 
 function make2Darray() {
   const arr = new Array(cols);
   for (let i = 0; i < cols; i += 1) {
     arr[i] = new Array(rows);
   }
+  // RANDOMIZER
+  //
+  // for (let i = 0; i < cols; i += 1) {
+  //   for (let j = 0; j < rows; j += 1) {
+  //     let z = 0;
+  //     if (j % 2 === 0) {
+  //       z = Math.round(Math.random() / 1.75);
+  //     } else {
+  //       z = Math.round(Math.random() / 1.9);
+  //     }
+  //     arr[i][j] = [i, j, z];
+  //   }
+  // }
   for (let i = 0; i < cols; i += 1) {
     for (let j = 0; j < rows; j += 1) {
-      let z = 0;
-      // if (j % 2 === 0) {
-      //   z = Math.round(Math.random() / 1.95);
-      // } else {
-      //   z = Math.round(Math.random() / 1.9);
-      // }
-      arr[i][j] = [i, j, z];
-    }
-  }
-  for (let i = 0; i < cols; i += 1) {
-    for (let j = 0; j < rows; j += 1) {
-      arr[i][j].push(countNeighbours(i, j, arr));
+      arr[i][j] = [i, j, 0];
       canvas2D.fillStyle = `rgb(
           0,
           0,
@@ -157,21 +80,51 @@ function make2Darray() {
 
 let arr = make2Darray();
 
+function countNeighbors(i, j, array) {
+  let count = 0;
+  if (j - 1 >= 0) {
+    if (array[i][j - 1][2] === 1) count += 1;
+  }
+  if (j - 1 >= 0 && i - 1 >= 0) {
+    if (array[i - 1][j - 1][2] === 1) count += 1;
+  }
+  if (j - 1 >= 0 && i + 1 < cols) {
+    if (array[i + 1][j - 1][2] === 1) count += 1;
+  }
+  if (i - 1 >= 0) {
+    if (array[i - 1][j][2] === 1) count += 1;
+  }
+  if (i + 1 < cols) {
+    if (array[i + 1][j][2] === 1) count += 1;
+  }
+  if (j + 1 < rows) {
+    if (array[i][j + 1][2] === 1) count += 1;
+  }
+  if (j + 1 < rows && i - 1 >= 0) {
+    if (array[i - 1][j + 1][2] === 1) count += 1;
+  }
+  if (j + 1 < rows && i + 1 < cols) {
+    if (array[i + 1][j + 1][2] === 1) count += 1;
+  }
+  return count;
+}
+
 function gameOflife() {
-  const arrCopy = [...arr];
+  let arrCopy = JSON.parse(JSON.stringify(arr));
+  console.log(arrCopy, arr);
   for (let i = 0; i < cols; i += 1) {
     for (let j = 0; j < rows; j += 1) {
-      let neighbours = countNeighbours(i, j, arrCopy);
-      if (neighbours < 2) {
+      let neighbors = countNeighbors(i, j, arrCopy);
+      if (neighbors < 2) {
         arr[i][j][2] = 0;
-      } else if (neighbours > 3) {
+      } else if (neighbors > 3) {
         arr[i][j][2] = 0;
       } else if (
-        (arr[i][j][2] === 1 && neighbours === 2) ||
-        (arr[i][j][2] === 1 && neighbours === 3)
+        (arrCopy[i][j][2] === 1 && neighbors === 2) ||
+        (arrCopy[i][j][2] === 1 && neighbors === 3)
       ) {
         arr[i][j][2] = 1;
-      } else if (arr[i][j][2] === 0 && neighbours === 3) {
+      } else if (arrCopy[i][j][2] === 0 && neighbors === 3) {
         arr[i][j][2] = 1;
       }
       if (arr[i][j][2] === 1) {
