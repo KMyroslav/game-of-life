@@ -9,20 +9,34 @@ let continious,
   curX,
   curY,
   random,
+  width,
+  height,
+  cols,
+  rows,
   start = 0;
+let randomVal = 1.5;
 const button = document.querySelector('.btn');
 const buttonRst = document.querySelector('.btn-reset');
-const buttonRnd = document.querySelector('.btn-random');
-let canvas = document.querySelector('.canvas');
-let canvas2D = document.querySelector('.canvas').getContext('2d');
-const size = 12;
-const width = canvas.clientWidth - (canvas.clientWidth % size);
-const height = canvas.clientHeight - (canvas.clientHeight % size);
-const cols = width / size;
-const rows = height / size;
-canvas.setAttribute('style', `width:${width}px; height:${height}px`);
-canvas.setAttribute('width', `${width}`);
-canvas.setAttribute('height', `${height}`);
+const buttonRnd = document.querySelector('[data-rnd]');
+const buttonRndIncr = document.querySelector('[data-rnd-incr]');
+const buttonRndDecr = document.querySelector('[data-rnd-decr]');
+const buttonSize = document.querySelector('[data-size]');
+const buttonSizeIncr = document.querySelector('[data-size-incr]');
+const buttonSizeDecr = document.querySelector('[data-size-decr]');
+const canvas = document.querySelector('.canvas');
+const canvas2D = document.querySelector('.canvas').getContext('2d');
+let size = 12;
+
+function canvasResize() {
+  width = canvas.clientWidth - (canvas.clientWidth % size);
+  height = canvas.clientHeight - (canvas.clientHeight % size);
+  cols = width / size;
+  rows = height / size;
+  canvas.setAttribute('style', `width:${width}px; height:${height}px`);
+  canvas.setAttribute('width', `${width}`);
+  canvas.setAttribute('height', `${height}`);
+}
+canvasResize();
 
 canvas.onmousemove = function (e) {
   curX = Math.floor(e.offsetX / size);
@@ -52,7 +66,7 @@ function make2Darray(random) {
   for (let i = 0; i < cols; i += 1) {
     for (let j = 0; j < rows; j += 1) {
       if (random) {
-        let z = Math.round(Math.random() / 1.65);
+        let z = Math.round(Math.random() / randomVal);
         arr[i][j] = [i, j, z];
       } else {
         arr[i][j] = [i, j, 0];
@@ -137,10 +151,42 @@ function gameOflife() {
 button.addEventListener('click', onBtnClick);
 buttonRst.addEventListener('click', onRstBtnClick);
 buttonRnd.addEventListener('click', onRndBtnClick);
+buttonRndIncr.addEventListener('click', onRndIncrClick);
+buttonRndDecr.addEventListener('click', onRndDecrClick);
+buttonSize.addEventListener('click', onSizeBtnClick);
+buttonSizeIncr.addEventListener('click', onSizeIncrClick);
+buttonSizeDecr.addEventListener('click', onSizeDecrClick);
 
 function onRndBtnClick() {
   random = true;
   arr = make2Darray(random);
+}
+
+function onRndIncrClick() {
+  if (randomVal >= 1) randomVal -= 0.1;
+}
+function onRndDecrClick() {
+  if (randomVal <= 2) randomVal += 0.1;
+}
+
+function onSizeBtnClick() {
+  size = 12;
+  if (start) onBtnClick();
+  canvasResize();
+  onRstBtnClick();
+}
+
+function onSizeIncrClick() {
+  if (size <= 180) size += 2;
+  if (start) onBtnClick();
+  canvasResize();
+  onRstBtnClick();
+}
+function onSizeDecrClick() {
+  if (size >= 2) size -= 2;
+  if (start) onBtnClick();
+  canvasResize();
+  onRstBtnClick();
 }
 
 function onBtnClick() {
