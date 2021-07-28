@@ -53,9 +53,11 @@ canvas.onmousedown = function () {
           ${Math.floor(Math.random() * 255)})`;
   if (arr[curX][curY][2] === 1) {
     canvas2D.fillRect(curX * size, curY * size, size, size);
+    canvas2D.strokeRect(curX * size, curY * size, size, size);
   }
   if (arr[curX][curY][2] === 0) {
     canvas2D.clearRect(curX * size, curY * size, size, size);
+    canvas2D.strokeRect(curX * size, curY * size, size, size);
   }
 };
 
@@ -82,6 +84,7 @@ function make2Darray(random) {
       }
       if (arr[i][j][2] === 0) {
         canvas2D.clearRect(i * size, j * size, size, size);
+        canvas2D.strokeRect(i * size, j * size, size, size);
       }
     }
   }
@@ -185,7 +188,7 @@ function onSizeIncrClick() {
   onRstBtnClick();
 }
 function onSizeDecrClick() {
-  if (size >= 2) size -= 2;
+  if (size >= 4) size -= 2;
   if (start) onBtnClick();
   canvasResize();
   onRstBtnClick();
