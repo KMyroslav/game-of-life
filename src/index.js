@@ -25,11 +25,13 @@ const buttonSizeIncr = document.querySelector('[data-size-incr]');
 const buttonSizeDecr = document.querySelector('[data-size-decr]');
 const canvas = document.querySelector('.canvas');
 const canvas2D = document.querySelector('.canvas').getContext('2d');
+const realWidth = canvas.clientWidth;
+const realHeight = canvas.clientHeight;
 let size = 12;
 
 function canvasResize() {
-  width = canvas.clientWidth - (canvas.clientWidth % size);
-  height = canvas.clientHeight - (canvas.clientHeight % size);
+  width = realWidth - (realWidth % size);
+  height = realHeight - (realHeight % size);
   cols = width / size;
   rows = height / size;
   canvas.setAttribute('style', `width:${width}px; height:${height}px`);
