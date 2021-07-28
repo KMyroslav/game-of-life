@@ -8,9 +8,11 @@ Any dead cell with exactly three live neighbors becomes a live cell.
 let continious,
   curX,
   curY,
+  random,
   start = 0;
 const button = document.querySelector('.btn');
 const buttonRst = document.querySelector('.btn-reset');
+const buttonRnd = document.querySelector('.btn-random');
 let canvas = document.querySelector('.canvas');
 let canvas2D = document.querySelector('.canvas').getContext('2d');
 const size = 12;
@@ -39,30 +41,22 @@ canvas.onmousedown = function () {
   if (arr[curX][curY][2] === 0) {
     canvas2D.clearRect(curX * size, curY * size, size, size);
   }
-  console.log(arr);
 };
 
-function make2Darray() {
+function make2Darray(random) {
   const arr = new Array(cols);
   for (let i = 0; i < cols; i += 1) {
     arr[i] = new Array(rows);
   }
-  // RANDOMIZER
-  //
-  // for (let i = 0; i < cols; i += 1) {
-  //   for (let j = 0; j < rows; j += 1) {
-  //     let z = 0;
-  //     if (j % 2 === 0) {
-  //       z = Math.round(Math.random() / 1.75);
-  //     } else {
-  //       z = Math.round(Math.random() / 1.9);
-  //     }
-  //     arr[i][j] = [i, j, z];
-  //   }
-  // }
+
   for (let i = 0; i < cols; i += 1) {
     for (let j = 0; j < rows; j += 1) {
-      arr[i][j] = [i, j, 0];
+      if (random) {
+        let z = Math.round(Math.random() / 1.65);
+        arr[i][j] = [i, j, z];
+      } else {
+        arr[i][j] = [i, j, 0];
+      }
       canvas2D.fillStyle = `rgb(
           0,
           0,
@@ -78,7 +72,7 @@ function make2Darray() {
   return arr;
 }
 
-let arr = make2Darray();
+let arr = make2Darray(random);
 
 function countNeighbors(i, j, array) {
   let count = 0;
@@ -111,7 +105,6 @@ function countNeighbors(i, j, array) {
 
 function gameOflife() {
   let arrCopy = JSON.parse(JSON.stringify(arr));
-  console.log(arrCopy, arr);
   for (let i = 0; i < cols; i += 1) {
     for (let j = 0; j < rows; j += 1) {
       let neighbors = countNeighbors(i, j, arrCopy);
@@ -143,6 +136,12 @@ function gameOflife() {
 
 button.addEventListener('click', onBtnClick);
 buttonRst.addEventListener('click', onRstBtnClick);
+buttonRnd.addEventListener('click', onRndBtnClick);
+
+function onRndBtnClick() {
+  random = true;
+  arr = make2Darray(random);
+}
 
 function onBtnClick() {
   start = start === 0 ? 1 : 0;
@@ -156,5 +155,6 @@ function onBtnClick() {
 }
 
 function onRstBtnClick() {
-  arr = make2Darray();
+  random = false;
+  arr = make2Darray(random);
 }
