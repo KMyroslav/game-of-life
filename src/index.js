@@ -77,7 +77,7 @@ function make2Darray(random) {
       }
       canvas2D.fillStyle = `rgb(
           ${Math.floor(Math.random() * 255 * 0.4)},
-          ${Math.floor(Math.random() * 255)},
+          ${Math.floor(Math.random() * 255 * 0.85)},
           ${Math.floor(Math.random() * 255 * 0.4)})`;
       if (arr[i][j][2] === 1) {
         canvas2D.fillRect(i * size, j * size, size, size);
