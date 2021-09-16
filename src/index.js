@@ -76,9 +76,9 @@ function make2Darray(random) {
         arr[i][j] = [i, j, 0];
       }
       canvas2D.fillStyle = `rgb(
-          0,
-          0,
-          ${Math.floor(Math.random() * 255)})`;
+          ${Math.floor(Math.random() * 255 * 0.4)},
+          ${Math.floor(Math.random() * 255)},
+          ${Math.floor(Math.random() * 255 * 0.4)})`;
       if (arr[i][j][2] === 1) {
         canvas2D.fillRect(i * size, j * size, size, size);
       }
@@ -141,9 +141,9 @@ function gameOflife() {
       }
       if (arr[i][j][2] === 1) {
         canvas2D.fillStyle = `rgb(
-            0,
-            0,
-            ${Math.floor(Math.random() * 255)})`;
+          ${Math.floor(Math.random() * 255 * 0.4)},
+          ${Math.floor(Math.random() * 255)},
+          ${Math.floor(Math.random() * 255 * 0.4)})`;
         canvas2D.fillRect(i * size, j * size, size, size);
       }
       if (arr[i][j][2] === 0) {
