@@ -167,10 +167,10 @@ function onRndBtnClick() {
   arr = make2Darray(random);
 }
 
-function onRndIncrClick() {
+function onRndDecrClick() {
   if (randomVal >= 1) randomVal -= 0.1;
 }
-function onRndDecrClick() {
+function onRndIncrClick() {
   if (randomVal <= 2) randomVal += 0.1;
 }
 
