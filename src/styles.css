@@ -23,9 +23,9 @@ body {
   left: 0%;
 }
 
-.list-item:not(:last-child) {
+/* .list-item:not(:last-child) {
   margin-bottom: 3px;
-}
+} */
 
 .randomize-list {
   display: flex;
